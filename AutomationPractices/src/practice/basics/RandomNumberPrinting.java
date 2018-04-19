@@ -5,6 +5,7 @@ import java.util.Random;
 
 public class RandomNumberPrinting {
 
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		Date date = new Date();
 		String array[]= date.toLocaleString().split(" ");
