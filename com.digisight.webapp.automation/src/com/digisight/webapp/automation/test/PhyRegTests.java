@@ -1,6 +1,5 @@
 package com.digisight.webapp.automation.test;
 
-import org.openqa.selenium.Alert;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Test;
 
