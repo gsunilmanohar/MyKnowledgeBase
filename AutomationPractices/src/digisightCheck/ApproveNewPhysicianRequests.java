@@ -3,7 +3,7 @@ package digisightCheck;
 import org.openqa.selenium.By;
 
 public class ApproveNewPhysicianRequests extends RegistrationCheck {
-	static String adminEmailID = "Admin21Apr104332@digisight.nett";
+	static String adminEmailID = "Admin21Apr114139@digisight.nett";
 
 	public static void main(String args[]) throws InterruptedException {
 		System.setProperty("webdriver.firefox.bin", "/Applications/Firefox");
@@ -13,12 +13,15 @@ public class ApproveNewPhysicianRequests extends RegistrationCheck {
 	}
 
 	public static void ApproveRequests() {
-		if (driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept'][1]")) != null) {
-			driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept'][1]")).click();
-			checkAlert();
-		} else if(driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept']")) != null)
+		try {
+			if (driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept'][1]")) != null) {
+				driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept'][1]")).click();
+				checkAlert();
+				} else if(driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept']")) != null)
 			driver.findElement(By.xpath("//h2[text()='Pending Participants']/following::button[text()='Accept']")).click();			// System.out.println("Accepted the Add Request and Skipped the sightbook popup - On Admin Page.");
-
+			} catch (Exception e) {
+				System.out.println("Failed to Approve the Request.");
+			}
 	}
 
 	public static void ApproveAllPhysicians(String adminemailID) throws InterruptedException {
@@ -30,7 +33,9 @@ public class ApproveNewPhysicianRequests extends RegistrationCheck {
 		for (int noOfPhysicians = 1; noOfPhysicians <= rowCount; noOfPhysicians++) {
 			ApproveRequests();																								// System.out.println(noOfPhysicians); 
 		}
-		driver.findElement(By.id("sign_out")).click();																		System.out.println("Now signing out the user " + adminEmailID + " with all approvals.");
+		practiceID = driver.findElement(By.xpath("//p[contains(text(),'Practice ID:')]")).getText();
+		String practiceIDs[] = practiceID.split(" ");
+		driver.findElement(By.id("sign_out")).click();																		System.out.println("Now signing out the Admin user\nEmail ID: " + adminEmailID + "\nPractice ID: "+practiceIDs[2]);
 		driver.quit();																										// System.out.println("Closed the Web-Browser.");
 
 	}

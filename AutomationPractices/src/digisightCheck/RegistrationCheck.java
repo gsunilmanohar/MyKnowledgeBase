@@ -27,8 +27,8 @@ public class RegistrationCheck {
 	static int SpeOption = CheckBoxNumber.nextInt(8) + 3;
 	static int LoginFailureFlag;
 	
-	public static void delay1() throws InterruptedException { Thread.sleep(1000); }
-	public static void delay3() throws InterruptedException { Thread.sleep(3000); }
+	public static void delay1() throws InterruptedException { Thread.sleep(2000); }
+	public static void delay3() throws InterruptedException { Thread.sleep(4000); }
 	
 	public static void main(String args[]) throws InterruptedException {
 		System.setProperty("webdriver.firefox.bin", "/Applications/Firefox");
@@ -73,7 +73,7 @@ public class RegistrationCheck {
 			driver.navigate().to("https://aws-qa2.digisight.net");
 			driver.findElement(By.linkText("SIGNUP")).click();
 			driver.findElement(By.linkText("Healthcare Professionals area")).click();								// System.out.println("Navigated to Registration Page");
-			Select UserAccType = new Select(driver.findElement(By.id("user_physician_attributes_account_type")));
+			Select UserAccType = new Select(driver.findElement(By.id("user_physician_attributes_account_type"))); delay1();
 			UserAccType.selectByVisibleText("Physician");														// System.out.println("Select the Account type as Physician");
 			driver.findElement(By.id("user_email")).sendKeys(PhyName + "@digisight.nett");						System.out.println("Physician Name used for registration: " + PhyName + "@digisight.nett");
 			driver.findElement(By.id("user_password")).sendKeys("Sunil@123");										// System.out.println("Login ID: " + PhyName + "@digisight.nett" + "\nPassword: Sunil@123");
@@ -85,7 +85,7 @@ public class RegistrationCheck {
 			driver.findElement(By.xpath(".//*[@id='mdInfo']/label[" + SpeOption + "]/input")).click();			// System.out.println("Accepted Terms of Service");
 			driver.findElement(By.xpath("//input[@name='legalTerms']")).click();									// System.out.println("Registering the New Physician Login");
 			driver.findElement(By.xpath("//button[text()='Register']")).click();									// System.out.println("Registered and Successfully Logged in as " + PhyName + "@digisight.nett");
-			driver.findElement(By.xpath("//a[text()='Connect with your Practice']")).click(); 		delay3();	// System.out.println("Navigated to Connect to Practice Page");
+			driver.findElement(By.xpath("//a[text()='Connect with your Practice']")).click(); 					// System.out.println("Navigated to Connect to Practice Page");
 			} catch (Exception e) {
 				System.out.println("Failed to Register the new user\n--------------------------------------------------------");
 			}
