@@ -1,15 +1,16 @@
-package digisightCheck;
+package AdminPhysicanCheck;
 
 import org.openqa.selenium.By;
 
 public class ApproveNewPhysicianRequests extends RegistrationCheck {
-	static String adminEmailID = "Admin21Apr114139@digisight.nett";
+	static String adminEmailID = "Admin24Apr153756@digisight.nett";
 
 	public static void main(String args[]) throws InterruptedException {
 		System.setProperty("webdriver.firefox.bin", "/Applications/Firefox");
 		System.setProperty("webdriver.gecko.driver", "lib/geckodriver");
 		driver.manage().window().maximize();
 		ApproveAllPhysicians(adminEmailID);
+		driver.quit();																										// System.out.println("Closed the Web-Browser.");
 	}
 
 	public static void ApproveRequests() {
@@ -25,19 +26,22 @@ public class ApproveNewPhysicianRequests extends RegistrationCheck {
 	}
 
 	public static void ApproveAllPhysicians(String adminemailID) throws InterruptedException {
-		LoginWithRegisteredUser(adminemailID);
-		checkAlert();																										// System.out.println("Skipped the sightbook popup - On Login.");
-		driver.findElement(By.xpath("//a[text()='Administer Practice']")).click();
-		checkAlert();																										// System.out.println("Skipped the sightbook popup - On Admin Page.");
-		int rowCount = driver.findElements(By.xpath("//h2[text()='Pending Participants']/following::tbody[1]/tr")).size();
-		for (int noOfPhysicians = 1; noOfPhysicians <= rowCount; noOfPhysicians++) {
-			ApproveRequests();																								// System.out.println(noOfPhysicians); 
+		try {
+			LoginWithRegisteredUser(adminemailID);
+			checkAlert();																										// System.out.println("Skipped the sightbook popup - On Login.");
+			driver.findElement(By.xpath("//a[text()='Administer Practice']")).click();
+			checkAlert();																										// System.out.println("Skipped the sightbook popup - On Admin Page.");
+			int rowCount = driver.findElements(By.xpath("//h2[text()='Pending Participants']/following::tbody[1]/tr")).size();
+			for (int noOfPhysicians = 1; noOfPhysicians <= rowCount; noOfPhysicians++)
+				ApproveRequests();																								// System.out.println(noOfPhysicians); 
+			practiceID = driver.findElement(By.xpath("//p[contains(text(),'Practice ID:')]")).getText();
+			String practiceIDs[] = practiceID.split(" ");
+			driver.findElement(By.id("sign_out")).click();																		
+			System.out.println("Now signing out the Admin user\nEmail ID: " + adminEmailID + "\nPractice ID: "+practiceIDs[2]);
+		} catch (Exception e) {
+			System.out.println("Failed to Approve physicians.\n------------------------------------------------------------------");
 		}
-		practiceID = driver.findElement(By.xpath("//p[contains(text(),'Practice ID:')]")).getText();
-		String practiceIDs[] = practiceID.split(" ");
-		driver.findElement(By.id("sign_out")).click();																		System.out.println("Now signing out the Admin user\nEmail ID: " + adminEmailID + "\nPractice ID: "+practiceIDs[2]);
-		driver.quit();																										// System.out.println("Closed the Web-Browser.");
-
+		
 	}
 }
 
