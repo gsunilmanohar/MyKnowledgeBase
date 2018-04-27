@@ -24,7 +24,7 @@ public class ApproveNewPhysicianRequests extends RegistrationCheck {
 				System.out.println("Failed to Approve the Request.");
 			}
 	}
-
+	
 	public static void ApproveAllPhysicians(String adminemailID) throws InterruptedException {
 		try {
 			LoginWithRegisteredUser(adminemailID);
@@ -37,7 +37,7 @@ public class ApproveNewPhysicianRequests extends RegistrationCheck {
 			practiceID = driver.findElement(By.xpath("//p[contains(text(),'Practice ID:')]")).getText();
 			String practiceIDs[] = practiceID.split(" ");
 			driver.findElement(By.id("sign_out")).click();																		
-			System.out.println("Now signing out the Admin user\nEmail ID: " + adminEmailID + "\nPractice ID: "+practiceIDs[2]);
+			System.out.println("Now signing out the Admin user\nEmail ID: " + adminemailID + "\nPractice ID: "+practiceIDs[2]);
 		} catch (Exception e) {
 			System.out.println("Failed to Approve physicians.\n------------------------------------------------------------------");
 		}

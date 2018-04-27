@@ -43,7 +43,7 @@ public class RegistrationCheck {
 		System.setProperty("webdriver.firefox.bin", "/Applications/Firefox");
 		System.setProperty("webdriver.gecko.driver", "lib/geckodriver");
 		driver.manage().window().maximize();
-		String practiceIDs = AdminUserRegistration();	 		/*"1300";*/			System.out.println("Newly created Practice ID is "+practiceIDs);
+		String practiceIDs = AdminUserRegistration();	 							System.out.println("Newly created Practice ID is "+practiceIDs);
 		WritingToFile(AdminEmailID);
 		driver.findElement(By.id("sign_out")).click();								delay3();
 		for (int noOfNewRegistrations = 0; noOfNewRegistrations < 5; noOfNewRegistrations++) {
@@ -55,9 +55,9 @@ public class RegistrationCheck {
 				driver.findElement(By.id("sign_out")).click();						delay3();
 				WritingToFile(PhyName+"@digisight.nett");							
 		}																			delay1();
-		String adminEmailID = "Admin26Apr151436@digisight.nett"; //+"@digisight.nett";
-		ApproveNewPhysicianRequests.ApproveAllPhysicians(adminEmailID);		delay1();
-		AddLocations(adminEmailID);		delay1();
+		String adminEmailID = Admin+"@digisight.nett";
+		ApproveNewPhysicianRequests.ApproveAllPhysicians(adminEmailID);				delay1();
+		AddLocations(adminEmailID);													delay1();
 		RenameUserIDs();
 	}
 
@@ -94,7 +94,7 @@ public class RegistrationCheck {
 			driver.findElement(By.linkText("Healthcare Professionals area")).click();								// System.out.println("Navigated to Registration Page");
 			Select UserAccType = new Select(driver.findElement(By.id("user_physician_attributes_account_type"))); delay1();
 			UserAccType.selectByVisibleText("Physician");														// System.out.println("Select the Account type as Physician");
-			driver.findElement(By.id("user_email")).sendKeys(PhyName + "@digisight.nett");						System.out.println("Physician Name used for registration: " + PhyName+"@digisight.nett");
+			driver.findElement(By.id("user_email")).sendKeys(PhyName + "@digisight.nett");						// System.out.println("Physician Name used for registration: " + PhyName+"@digisight.nett");
 			driver.findElement(By.id("user_password")).sendKeys("Sunil@123");										// System.out.println("Login ID: " + PhyName + "@digisight.nett" + "\nPassword: Sunil@123");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_first_name")).sendKeys(PhyName);
 			driver.findElement(By.id("user_physician_attributes_information_attributes_last_name")).sendKeys("Test");
@@ -117,7 +117,7 @@ public class RegistrationCheck {
 			driver.findElement(By.linkText("Healthcare Professionals area")).click();								// System.out.println("Navigated to Registration Page");
 			Select UserAccType = new Select(driver.findElement(By.id("user_physician_attributes_account_type")));
 			UserAccType.selectByVisibleText("Practice Administrator");											// System.out.println("Select the Account type as Practice Administrator");
-			driver.findElement(By.id("user_email")).sendKeys(AdminEmailID);										System.out.println("Admin Name used for registration: " + AdminEmailID);
+			driver.findElement(By.id("user_email")).sendKeys(AdminEmailID);										// System.out.println("Admin Name used for registration: " + AdminEmailID);
 			driver.findElement(By.id("user_password")).sendKeys("Sunil@123");										// System.out.println("Login ID: " + Admin + "@digisight.nett" + "\nPassword: Sunil@123");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_first_name")).sendKeys(Admin);
 			driver.findElement(By.id("user_physician_attributes_information_attributes_last_name")).sendKeys("Test");
@@ -138,14 +138,14 @@ public class RegistrationCheck {
 	public static void RenameUserIDs() throws InterruptedException{
 		try (BufferedReader br = new BufferedReader(new FileReader(FILENAME))) {
 			LoginWithRegisteredUser("adminnew@digisight.net");
+			System.out.println("Following are the list of usernames set for respectice Email IDs: ");
 			   for(String emailFromFile; (emailFromFile = br.readLine()) != null; ) {
 				   driver.findElement(By.xpath("//a[contains(text(),'Users')]")).click();												delay1();
 				   checkAlert();
-				   System.out.println("Email From File is "+emailFromFile);
 				   driver.findElement(By.id("q_email_cont")).sendKeys(emailFromFile);
 				   driver.findElement(By.xpath("//input[contains(@value,'Search')]")).click();
 				   driver.findElement(By.xpath("//button[contains(text(),'Edit User Record')]")).click();								delay1();
-				   System.out.println(emailFromFile.split("@")[0]);
+				   System.out.println(emailFromFile + " " + emailFromFile.split("@")[0]);
 				   driver.findElement(By.xpath("//input[contains(@id,'user_username')]")).click();
 				   driver.findElement(By.xpath("//input[contains(@id,'user_username')]")).clear();
 				   driver.findElement(By.xpath("//input[contains(@id,'user_username')]")).sendKeys(emailFromFile.split("@")[0]);		delay1();
