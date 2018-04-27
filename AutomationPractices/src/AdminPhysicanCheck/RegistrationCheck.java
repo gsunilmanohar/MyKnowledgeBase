@@ -19,16 +19,16 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class RegistrationCheck {
 	static WebDriver driver = new FirefoxDriver();
-	static Date date = new Date();
-	@SuppressWarnings("deprecation")
-	static String array[] = date.toLocaleString().split(" ");
-	@SuppressWarnings("deprecation")
-	static String Admin = "Admin" + date.getDate() + array[0] + date.getHours() + date.getMinutes() + date.getSeconds();
-	static String AdminEmailID = Admin + "@digisight.nett";
-	@SuppressWarnings("deprecation")
-	static String PhyName = "Phy" + date.getDate() + array[0] + date.getHours() + date.getMinutes() + date.getSeconds();
-	@SuppressWarnings("deprecation")
-	static String LicenseNumber = date.getDate() + array[0] + date.getHours() + "" + date.getMinutes() + ""+ date.getSeconds();
+//	static Date date = new Date();
+//	@SuppressWarnings("deprecation")
+//	static String array[] = date.toLocaleString().split(" ");
+//	@SuppressWarnings("deprecation")
+//	static String Admin = "Admin" + DateAndTimeNow();
+//	static String AdminEmailID = Admin + "@digisight.nett";
+//	@SuppressWarnings("deprecation")
+//	static String PhyName = "Phy" + date.getDate() + array[0] + date.getHours() + date.getMinutes() + date.getSeconds();
+//	@SuppressWarnings("deprecation")
+//	static String LicenseNumber = date.getDate() + array[0] + date.getHours() + "" + date.getMinutes() + ""+ date.getSeconds();
 	static String practiceID;
 	static Random CheckBoxNumber = new Random();
 	static int SpeOption = CheckBoxNumber.nextInt(8) + 3;
@@ -39,23 +39,23 @@ public class RegistrationCheck {
 	
 	public static void delay3() throws InterruptedException { Thread.sleep(4000); }
 	
-	public static void main(String args[]) throws InterruptedException {
+	@SuppressWarnings("resource")
+	public static void main(String args[]) throws InterruptedException, IOException {
 		System.setProperty("webdriver.firefox.bin", "/Applications/Firefox");
 		System.setProperty("webdriver.gecko.driver", "lib/geckodriver");
 		driver.manage().window().maximize();
 		String practiceIDs = AdminUserRegistration();	 							System.out.println("Newly created Practice ID is "+practiceIDs);
-		WritingToFile(AdminEmailID);
 		driver.findElement(By.id("sign_out")).click();								delay3();
 		for (int noOfNewRegistrations = 0; noOfNewRegistrations < 5; noOfNewRegistrations++) {
 				delay1();
-				PhyName = PhyName.concat(String.valueOf((noOfNewRegistrations)));
-				LicenseNumber = LicenseNumber + noOfNewRegistrations;
+				String PhyName = "Phy" + DateAndTimeNow();
 				NewUserRegistration();												delay3();
 				ConnectToPractice(practiceIDs);
 				driver.findElement(By.id("sign_out")).click();						delay3();
 				WritingToFile(PhyName+"@digisight.nett");							
 		}																			delay1();
-		String adminEmailID = Admin+"@digisight.nett";
+		BufferedReader br = new BufferedReader(new FileReader(FILENAME));
+		String adminEmailID = br.readLine();
 		ApproveNewPhysicianRequests.ApproveAllPhysicians(adminEmailID);				delay1();
 		AddLocations(adminEmailID);													delay1();
 		RenameUserIDs();
@@ -94,12 +94,14 @@ public class RegistrationCheck {
 			driver.findElement(By.linkText("Healthcare Professionals area")).click();								// System.out.println("Navigated to Registration Page");
 			Select UserAccType = new Select(driver.findElement(By.id("user_physician_attributes_account_type"))); delay1();
 			UserAccType.selectByVisibleText("Physician");														// System.out.println("Select the Account type as Physician");
+			String PhyName = "Phy" + DateAndTimeNow();
 			driver.findElement(By.id("user_email")).sendKeys(PhyName + "@digisight.nett");						// System.out.println("Physician Name used for registration: " + PhyName+"@digisight.nett");
 			driver.findElement(By.id("user_password")).sendKeys("Sunil@123");										// System.out.println("Login ID: " + PhyName + "@digisight.nett" + "\nPassword: Sunil@123");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_first_name")).sendKeys(PhyName);
 			driver.findElement(By.id("user_physician_attributes_information_attributes_last_name")).sendKeys("Test");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_city")).sendKeys("RoseLand");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_state")).sendKeys("TX");
+			String LicenseNumber = DateAndTimeNow();
 			driver.findElement(By.id("user_physician_attributes_information_attributes_license_number")).sendKeys(LicenseNumber); // System.out.println("License Number: " + LicenseNumber);
 			driver.findElement(By.xpath(".//*[@id='mdInfo']/label[" + SpeOption + "]/input")).click();			// System.out.println("Accepted Terms of Service");
 			driver.findElement(By.xpath("//input[@name='legalTerms']")).click();									// System.out.println("Registering the New Physician Login");
@@ -117,14 +119,17 @@ public class RegistrationCheck {
 			driver.findElement(By.linkText("Healthcare Professionals area")).click();								// System.out.println("Navigated to Registration Page");
 			Select UserAccType = new Select(driver.findElement(By.id("user_physician_attributes_account_type")));
 			UserAccType.selectByVisibleText("Practice Administrator");											// System.out.println("Select the Account type as Practice Administrator");
+			String AdminEmailID = "Admin" + DateAndTimeNow() + "@digisight.nett";
 			driver.findElement(By.id("user_email")).sendKeys(AdminEmailID);										// System.out.println("Admin Name used for registration: " + AdminEmailID);
 			driver.findElement(By.id("user_password")).sendKeys("Sunil@123");										// System.out.println("Login ID: " + Admin + "@digisight.nett" + "\nPassword: Sunil@123");
+			String Admin = "Admin" + DateAndTimeNow();
 			driver.findElement(By.id("user_physician_attributes_information_attributes_first_name")).sendKeys(Admin);
 			driver.findElement(By.id("user_physician_attributes_information_attributes_last_name")).sendKeys("Test");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_city")).sendKeys("RoseLand");
 			driver.findElement(By.id("user_physician_attributes_information_attributes_state")).sendKeys("TX");	// System.out.println("Accepted Terms of Service");
 			driver.findElement(By.xpath("//input[@name='legalTerms']")).click();									// System.out.println("Registering the New Physician Login");
-			driver.findElement(By.xpath("//button[text()='Register']")).click();							delay3(); // System.out.println("Registered and Successfully Logged in as " + Admin + "@digisight.nett");		
+			driver.findElement(By.xpath("//button[text()='Register']")).click();							delay3(); // System.out.println("Registered and Successfully Logged in as " + Admin + "@digisight.nett");
+			WritingToFile(AdminEmailID);
 			} catch (Exception e) {
 				System.out.println("Failed to Register Admin user\n--------------------------------------------------------");
 			}
@@ -194,4 +199,13 @@ public class RegistrationCheck {
 			e.printStackTrace();
 		}
 	}
+
+	@SuppressWarnings("deprecation")
+	public static String DateAndTimeNow() {
+			Date date = new Date();
+			String array[] = date.toLocaleString().split(" ");
+			String monthName = array[0];
+			String dateAndTimeNow = date.getDate() + monthName + date.getHours() + date.getMinutes() + date.getSeconds();
+			return dateAndTimeNow;
+		}
 }
